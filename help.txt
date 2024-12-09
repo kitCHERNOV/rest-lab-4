@@ -1,0 +1,42 @@
+json для регистрации и входа
+{
+    "username": "user1",
+    "password": "1"
+}
+
+-----------------------------------------------------------
+Запрос для терминала для конвертации:
+
+$headers = @{
+    "Content-Type" = "application/json"
+    "Authorization" = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNzcyMTAxLCJpYXQiOjE3MzM3NzE4MDEsImp0aSI6Ijc5NzgxMTUyMWYwNTQ4YzE4ODk3YzJhOTg3MTQzZjZlIiwidXNlcl9pZCI6Nn0.39HiA_wr3M7BDA30J66Rwyrx8k4WHi5lYsc7WziuZJE"
+}
+
+$body = @{
+    from_currency = "USD"
+    to_currency = "EUR"
+    amount = 10.01
+} | ConvertTo-Json
+
+Invoke-WebRequest -Uri http://127.0.0.1:8000/currency/convert/ -Method POST -Headers $headers -Body $body
+
+-----------------------------------------------------------------------------------------------------------------
+
+curl -X GET http://127.0.0.1:8000/currency/exchange/ \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzMzgxOTAwLCJpYXQiOjE3MzMzODE2MDAsImp0aSI6IjYzOGFjYmNjMDJkMTRmOGRiZjE5MDU2Zjg1MThlNjFhIiwidXNlcl9pZCI6NH0.RSXd01498RR-kg1gYAcM8MgzrYWHbsIa_kFcSkteQ2Y"
+
+-----------------------------------------------------------------------------------------------------------------
+Запрос для терминала2 для списка валют:
+
+$headers = @{
+    "Authorization" = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNzcyMTAxLCJpYXQiOjE3MzM3NzE4MDEsImp0aSI6Ijc5NzgxMTUyMWYwNTQ4YzE4ODk3YzJhOTg3MTQzZjZlIiwidXNlcl9pZCI6Nn0.39HiA_wr3M7BDA30J66Rwyrx8k4WHi5lYsc7WziuZJE"
+}
+
+$response = Invoke-WebRequest -Uri "http://127.0.0.1:8000/currency/exchange/" -Method GET -Headers $headers
+
+# Выводим ответ
+$response.Content
+
+
+
+тесты: python .\manage.py test currency
